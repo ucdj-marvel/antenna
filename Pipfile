@@ -7,6 +7,9 @@ name = "pypi"
 django = "*"
 mysqlclient = "*"
 python-dotenv = "*"
+django-allauth = "*"
+django-extensions = "*"
+django-sendgrid-v5 = "*"
 
 [dev-packages]
 

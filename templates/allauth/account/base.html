@@ -4,7 +4,7 @@
 <html lang="ja">
   <head>
     <title>
-      {% block title %}{% endblock %}
+      {% block head_title %}{% endblock %}
     </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,9 +26,45 @@
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/antenna.css' %}">
+
+    {% block extra_head %}
+    {% endblock %}
   </head>
   <body>
-    {% block content %}{% endblock %}
+    <div id="colorlib-page">
+      <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
+      <aside id="colorlib-aside" role="complementary" class="js-fullheight">
+        <nav id="colorlib-main-menu" role="navigation">
+          <ul>
+            <li {% if "/" == request.path %}class="colorlib-active"{% endif %}><a href="{% url 'antenna:index' %}">Home</a></li>
+            {% if user.is_authenticated %}
+              <li {% if "/mypage/" == request.path %}class="colorlib-active"{% endif %}><a href="#">MyPage</a></li>
+              <li><a href="{% url 'account_logout' %}">Logout</a></li>
+            {% else %}
+              <li {% if "/login/" in request.path %}class="colorlib-active"{% endif %}><a href="{% url 'account_login' %}">Login</a></li>
+              {% if "/signup/" in request.path %}
+                <li class="colorlib-active"><a href="{% url 'account_signup' %}">SignUp</a></li>
+              {% endif %}
+            {% endif %}
+          </ul>
+        </nav>
+
+        <div class="colorlib-footer">
+          <h1 id="colorlib-logo" class="mb-4"><a href="{% url 'antenna:index' %}" style="background-image: url({% static 'images/bg_1.jpg' %});">Antenna<span>Home</span></a></h1>
+          <p class="pfooter">© 2022 UCDJ.</p>
+        </div>
+      </aside>
+      <div id="colorlib-main">
+        {% block body %}
+          <div class="allauth-container mx-auto text-center">
+            <div class="allauth-wrap py-5 px-md-5">
+              {% block content %}
+              {% endblock %}
+            </div>
+          </div>
+        {% endblock %}
+      </div>
+    </div>
 
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
@@ -48,5 +84,8 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="{% static 'js/google-map.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+
+    {% block extra_body %}
+    {% endblock %}
   </body>
 </html>

@@ -1,0 +1,17 @@
+{% extends "account/email/base_message.txt" %}
+{% load account %}
+{% load i18n %}
+
+{% block content %}
+{% user_display user as user_display %}
+{% with site_name=current_site.name site_domain=current_site.domain %}
+この度は{{ site_name }}へご登録いただき、誠にありがとうございます。
+
+ボタンをクリックして本登録をお願いします。
+
+現在はまだ仮登録の状態です。
+リンクをクリックしてユーザ情報を登録してください。
+
+{{ activate_url }}
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account %}
+
+{% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
+
+
+{% block content %}
+    <h3 class="mb-5 font-weight-bold">{% trans "Confirm E-mail Address" %}</h3>
+    {% if confirmation %}
+        {% user_display confirmation.email_address.user as user_display %}
+        <p>
+            {% with confirmation.email_address.email as email %}
+                <a href="mailto:{{ email }}">{{ email }}</a> が<br>
+                {{ user_display }} さんのメールアドレスであることを確認してください。
+            {% endwith %}
+        </p>
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+        {% csrf_token %}
+            <input type="submit" value="{% trans 'Confirm' %}" class="btn py-3 px-4 btn-primary">
+        </form>
+    {% else %}
+        {% url 'account_email' as email_url %}
+        <p>
+            メールアドレス確認リンクの有効期限が切れているか、無効です。
+            <a href="{{ email_url }}">新しいメール確認リクエストを発行してください</a>
+        </p>
+    {% endif %}
+{% endblock %}

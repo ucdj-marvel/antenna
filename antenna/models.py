@@ -2,6 +2,7 @@ from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
@@ -35,10 +36,28 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    username_validator  = UnicodeUsernameValidator()
     email = models.EmailField(_('email address'), unique=True)
-    username = models.CharField(_('username'), max_length=150, unique=True)
-    first_name = models.CharField(_('first name'), max_length=30, blank=True, null=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True, null=True)
+    username = models.CharField(
+        _('username'),
+        max_length=150,
+        unique=True,
+        validators=[
+            username_validator
+        ]
+    )
+    first_name = models.CharField(
+        _('first name'),
+        max_length=30,
+        blank=True,
+        null=True
+    )
+    last_name = models.CharField(
+        _('last name'),
+        max_length=150,
+        blank=True,
+        null=True
+    )
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,

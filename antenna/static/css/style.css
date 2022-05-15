@@ -9027,7 +9027,7 @@ textarea.form-control {
     .tagcloud a:hover {
       border: 1px solid #000; }
 
-.comment-form-wrap {
+.allauth-wrap {
   clear: both; }
 
 .comment-list {
